@@ -3,7 +3,7 @@ package com.straccion.route
 import com.straccion.model.AuthResponse
 import com.straccion.model.SignInParams
 import com.straccion.model.SignUpParams
-import com.straccion.repository.user.UserRepository
+import com.straccion.repository.auth.AuthRepository
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -12,7 +12,7 @@ import org.koin.ktor.ext.inject
 
 
 fun Routing.authRouting() {
-    val repository by inject<UserRepository>()
+    val repository by inject<AuthRepository>()
 
     route(path = "/signup"){
         post{

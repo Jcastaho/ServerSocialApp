@@ -35,5 +35,6 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
 
     implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("de.mkammerer.snowflake-id:snowflake-id:0.0.2")
     implementation("io.insert-koin:koin-ktor:3.4.0")
 }

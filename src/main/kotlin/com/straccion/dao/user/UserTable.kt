@@ -3,7 +3,7 @@ package com.straccion.dao.user
 import org.jetbrains.exposed.sql.Table
 
 object UserTable: Table(name= "users") {
-    val id= integer(name = "user_id").autoIncrement()
+    val id= long(name = "user_id").autoIncrement()
     val name = varchar(name = "user_name", length = 250)
     val email = varchar(name = "user_email", length = 250)
     val bio = text(name = "user_bio").default(
@@ -20,7 +20,7 @@ object UserTable: Table(name= "users") {
 }
 
 data class UserRow(
-    val id: Int,
+    val id: Long,
     val name: String,
     val bio: String,
     val imageUrl: String?,

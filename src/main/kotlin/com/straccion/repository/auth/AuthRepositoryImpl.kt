@@ -1,4 +1,4 @@
-package com.straccion.repository.user
+package com.straccion.repository.auth
 
 import com.straccion.dao.user.UserDao
 import com.straccion.generateToken
@@ -10,9 +10,9 @@ import com.straccion.security.hashPassword
 import com.straccion.util.Response
 import io.ktor.http.*
 
-class UserRepositoryImpl(
+class AuthRepositoryImpl(
     private val userDao: UserDao
-) : UserRepository {
+) : AuthRepository {
     override suspend fun signUp(params: SignUpParams): Response<AuthResponse> {
         return if (userAlreadyExist(params.email)){
             Response.Error(
