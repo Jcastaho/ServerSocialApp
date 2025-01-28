@@ -1,27 +1,24 @@
-package com.straccion
+package com.straccion.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.straccion.dao.user.UserDao
 import com.straccion.model.AuthResponse
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import java.sql.Connection
-import java.sql.DriverManager
-import org.jetbrains.exposed.sql.*
+import org.koin.ktor.ext.inject
 
 private const val CLAIM = "email"
 private const val jwtAudience = "jwt-audience"
 private const val jwtDomain = "https://jwt-provider-domain/"
 private const val jwtRealm = "ktor sample app"
 private const val jwtSecret = "secret"
+
 fun Application.configureSecurity() {
+    val userDao by inject<UserDao>()
     authentication {
         jwt {
             realm = jwtRealm
@@ -33,9 +30,15 @@ fun Application.configureSecurity() {
                     .build()
             )
             validate { credential ->
-                if (credential.payload.getClaim(CLAIM).asString() != null){
-                    JWTPrincipal(payload = credential.payload)
-                }else{
+                if (credential.payload.getClaim(CLAIM).asString() != null) {
+                    val userExists = userDao.findByEmail(email = credential.payload.getClaim(CLAIM).asString()) != null
+                    val isValidAudience = credential.payload.audience.contains(jwtAudience)
+                    if (userExists && isValidAudience) {
+                        JWTPrincipal(payload = credential.payload)
+                    } else {
+                        null
+                    }
+                } else {
                     null
                 }
             }
@@ -51,11 +54,11 @@ fun Application.configureSecurity() {
     }
 }
 
-fun generateToken(email: String): String{
+fun generateToken(email: String): String {
     return JWT.create()
         .withAudience(jwtAudience)
         .withIssuer(jwtDomain)
         .withClaim(CLAIM, email)
-     //   .withExpiresAt() esto sirve para que el token expire
+        //   .withExpiresAt() esto sirve para que el token expire
         .sign(Algorithm.HMAC256(jwtSecret))
 }

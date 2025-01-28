@@ -17,6 +17,9 @@ application {
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://company/com/maven2")
+    }
 }
 
 dependencies {
@@ -31,10 +34,15 @@ dependencies {
     implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.netty)
     implementation(libs.logback.classic)
+    implementation(libs.exposed.time)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
 
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("de.mkammerer.snowflake-id:snowflake-id:0.0.2")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.41.1")
     implementation("io.insert-koin:koin-ktor:3.4.0")
+    implementation("com.twelvemonkeys.imageio:imageio-core:3.12.0")
+    implementation("com.twelvemonkeys.imageio:imageio-webp:3.12.0")
+    implementation("com.twelvemonkeys.common:common-image:3.12.0")
 }

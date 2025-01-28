@@ -1,5 +1,9 @@
 package com.straccion.dao
 
+import com.straccion.dao.follows.FollowsTable
+import com.straccion.dao.post.PostTable
+import com.straccion.dao.post_comments.PostCommentsTable
+import com.straccion.dao.post_likes.PostLikesTable
 import com.straccion.dao.user.UserTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -13,7 +17,7 @@ object DataBaseFactory {
     fun init(){
         Database.connect(createHikariDataSource())
         transaction {
-            SchemaUtils.create(UserTable)
+            SchemaUtils.create(UserTable, FollowsTable, PostTable, PostLikesTable, PostCommentsTable)
         }
     }
     private fun createHikariDataSource(): HikariDataSource {

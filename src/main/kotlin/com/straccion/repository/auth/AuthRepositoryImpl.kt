@@ -1,7 +1,7 @@
 package com.straccion.repository.auth
 
 import com.straccion.dao.user.UserDao
-import com.straccion.generateToken
+import com.straccion.plugins.generateToken
 import com.straccion.model.AuthResponse
 import com.straccion.model.AuthResponseData
 import com.straccion.model.SignInParams
@@ -63,7 +63,9 @@ class AuthRepositoryImpl(
                             id = user.id,
                             name = user.name,
                             bio = user.bio,
-                            token = generateToken(params.email)
+                            token = generateToken(params.email),
+                            followingCount = user.followingCount,
+                            followersCount = user.followersCount
                         )
                     )
                 )
